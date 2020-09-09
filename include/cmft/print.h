@@ -8,10 +8,10 @@
 
 namespace cmft
 {
-    typedef int (*PrintFunc)(const char* _format, ...);
+typedef int ( *PrintFunc )( const char* _format, ... );
 
-    void setWarningPrintf(PrintFunc _printf);
-    void setInfoPrintf(PrintFunc _printf);
+void setWarningPrintf( PrintFunc _printf );
+void setInfoPrintf( PrintFunc _printf );
 
 } // namespace cmft
 

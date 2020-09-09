@@ -23,25 +23,25 @@
 
 namespace cmft
 {
-    // OpenCl.
-    //----
+// OpenCl.
+//----
 
-    int32_t clLoad();
-    void    clPrintDevices();
-    int32_t clUnload();
+int32_t clLoad();
+void    clPrintDevices();
+int32_t clUnload();
 
 
-    // ClContext.
-    //-----
+// ClContext.
+//-----
 
-    struct ClContext;
+struct ClContext;
 
-    ClContext* clInit(uint32_t _vendor              = CMFT_CL_VENDOR_ANY_GPU
-                    , uint32_t _preferredDeviceType = CMFT_CL_DEVICE_TYPE_GPU
-                    , uint32_t _preferredDeviceIdx  = 0
-                    , const char* _vendorStrPart    = NULL
-                    );
-    void       clDestroy(ClContext* _context);
+ClContext* clInit( uint32_t _vendor              = CMFT_CL_VENDOR_ANY_GPU
+				   , uint32_t _preferredDeviceType = CMFT_CL_DEVICE_TYPE_GPU
+				   , uint32_t _preferredDeviceIdx  = 0
+				   , const char* _vendorStrPart    = NULL
+				 );
+void       clDestroy( ClContext* _context );
 
 } // namespace cmft
 

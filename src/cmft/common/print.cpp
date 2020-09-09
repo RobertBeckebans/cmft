@@ -9,18 +9,18 @@
 
 namespace cmft
 {
-    PrintFunc printfWarning = ::printf;
-    PrintFunc printfInfo    = ::printf;
+PrintFunc printfWarning = ::printf;
+PrintFunc printfInfo    = ::printf;
 
-    void setWarningPrintf(PrintFunc _printf)
-    {
-        printfWarning = _printf;
-    }
+void setWarningPrintf( PrintFunc _printf )
+{
+	printfWarning = _printf;
+}
 
-    void setInfoPrintf(PrintFunc _printf)
-    {
-        printfInfo = _printf;
-    }
+void setInfoPrintf( PrintFunc _printf )
+{
+	printfInfo = _printf;
+}
 
 } // namespace cmft
 

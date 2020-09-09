@@ -22,24 +22,24 @@
 
 namespace cmft
 {
-	/// Load OpenCL dynamic library.
-	///
-	/// Returns internal reference count. If library is not available
-	/// returns 0.
-	///
-	int32_t clLoad();
+/// Load OpenCL dynamic library.
+///
+/// Returns internal reference count. If library is not available
+/// returns 0.
+///
+int32_t clLoad();
 
-	/// Unload OpenCL dynamic library.
-	///
-	/// Returns internal reference count. When reference count reaches 0
-	/// library is fully unloaded.
-	///
-	int32_t clUnload();
+/// Unload OpenCL dynamic library.
+///
+/// Returns internal reference count. When reference count reaches 0
+/// library is fully unloaded.
+///
+int32_t clUnload();
 
 } // namespace cmft
 
 #if defined(CMFT_CL_IMPLEMENTATION) && defined(__OPENCL_CL_H)
-#	error message("CL/cl.h is already included, it cannot be included before bx/cl.h header when CMFT_CL_IMPLEMENTATION is defined!")
+	#	error message("CL/cl.h is already included, it cannot be included before bx/cl.h header when CMFT_CL_IMPLEMENTATION is defined!")
 #endif // defined(CMFT_CL_IMPLEMENTATION) && defined(__OPENCL_CL_H)
 
 #ifndef __OPENCL_CL_H
@@ -71,9 +71,9 @@ namespace cmft
  ******************************************************************************/
 
 #ifdef __APPLE__
-#include <OpenCL/cl_platform.h>
+	#include <OpenCL/cl_platform.h>
 #else
-#include <CL/cl_platform.h>
+	#include <CL/cl_platform.h>
 #endif
 
 #ifdef __cplusplus
@@ -82,15 +82,15 @@ extern "C" {
 
 /******************************************************************************/
 
-typedef struct _cl_platform_id *    cl_platform_id;
-typedef struct _cl_device_id *      cl_device_id;
-typedef struct _cl_context *        cl_context;
-typedef struct _cl_command_queue *  cl_command_queue;
-typedef struct _cl_mem *            cl_mem;
-typedef struct _cl_program *        cl_program;
-typedef struct _cl_kernel *         cl_kernel;
-typedef struct _cl_event *          cl_event;
-typedef struct _cl_sampler *        cl_sampler;
+typedef struct _cl_platform_id*     cl_platform_id;
+typedef struct _cl_device_id*       cl_device_id;
+typedef struct _cl_context*         cl_context;
+typedef struct _cl_command_queue*   cl_command_queue;
+typedef struct _cl_mem*             cl_mem;
+typedef struct _cl_program*         cl_program;
+typedef struct _cl_kernel*          cl_kernel;
+typedef struct _cl_event*           cl_event;
+typedef struct _cl_sampler*         cl_sampler;
 
 typedef cl_uint             cl_bool;                     /* WARNING!  Unlike cl_ types in cl_platform.h, cl_bool is not guaranteed to be the same size as the bool in kernels. */
 typedef cl_ulong            cl_bitfield;
@@ -135,27 +135,30 @@ typedef cl_uint             cl_command_type;
 typedef cl_uint             cl_profiling_info;
 
 
-typedef struct _cl_image_format {
-    cl_channel_order        image_channel_order;
-    cl_channel_type         image_channel_data_type;
+typedef struct _cl_image_format
+{
+	cl_channel_order        image_channel_order;
+	cl_channel_type         image_channel_data_type;
 } cl_image_format;
 
-typedef struct _cl_image_desc {
-    cl_mem_object_type      image_type;
-    size_t                  image_width;
-    size_t                  image_height;
-    size_t                  image_depth;
-    size_t                  image_array_size;
-    size_t                  image_row_pitch;
-    size_t                  image_slice_pitch;
-    cl_uint                 num_mip_levels;
-    cl_uint                 num_samples;
-    cl_mem                  buffer;
+typedef struct _cl_image_desc
+{
+	cl_mem_object_type      image_type;
+	size_t                  image_width;
+	size_t                  image_height;
+	size_t                  image_depth;
+	size_t                  image_array_size;
+	size_t                  image_row_pitch;
+	size_t                  image_slice_pitch;
+	cl_uint                 num_mip_levels;
+	cl_uint                 num_samples;
+	cl_mem                  buffer;
 } cl_image_desc;
 
-typedef struct _cl_buffer_region {
-    size_t                  origin;
-    size_t                  size;
+typedef struct _cl_buffer_region
+{
+	size_t                  origin;
+	size_t                  size;
 } cl_buffer_region;
 
 
@@ -617,92 +620,92 @@ typedef struct _cl_buffer_region {
 // BK - CL/cl.h header end --------------------------------------------------->8
 
 // 1.1
-typedef cl_int           (CL_API_CALL* PFNCLGETPLATFORMIDSPROC)(cl_uint, cl_platform_id*, cl_uint*);
-typedef cl_int           (CL_API_CALL* PFNCLGETPLATFORMINFOPROC)(cl_platform_id, cl_platform_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLGETDEVICEINFOPROC)(cl_device_id, cl_device_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLGETDEVICEIDSPROC)(cl_platform_id, cl_device_type, cl_uint, cl_device_id*, cl_uint*);
-typedef cl_context       (CL_API_CALL* PFNCLCREATECONTEXTPROC)(const cl_context_properties*, cl_uint, const cl_device_id*, void (CL_CALLBACK*)(const char*, const void*, size_t, void*), void*, cl_int*);
-typedef cl_context       (CL_API_CALL* PFNCLCREATECONTEXTFROMTYPEPROC)(const cl_context_properties *, cl_device_type, void (CL_CALLBACK*)(const char*, const void*, size_t, void*), void*, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINCONTEXTPROC)(cl_context);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASECONTEXTPROC)(cl_context);
-typedef cl_int           (CL_API_CALL* PFNCLGETCONTEXTINFOPROC)(cl_context, cl_context_info, size_t, void*, size_t*);
-typedef cl_command_queue (CL_API_CALL* PFNCLCREATECOMMANDQUEUEPROC)(cl_context, cl_device_id, cl_command_queue_properties, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINCOMMANDQUEUEPROC)(cl_command_queue);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASECOMMANDQUEUEPROC)(cl_command_queue);
-typedef cl_int           (CL_API_CALL* PFNCLGETCOMMANDQUEUEINFOPROC)(cl_command_queue, cl_command_queue_info, size_t, void*, size_t*);
-typedef cl_mem           (CL_API_CALL* PFNCLCREATEBUFFERPROC)(cl_context, cl_mem_flags, size_t, void*, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINMEMOBJECTPROC)(cl_mem);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASEMEMOBJECTPROC)(cl_mem);
-typedef cl_int           (CL_API_CALL* PFNCLGETSUPPORTEDIMAGEFORMATSPROC)(cl_context, cl_mem_flags, cl_mem_object_type, cl_uint, cl_image_format*, cl_uint*);
-typedef cl_int           (CL_API_CALL* PFNCLGETMEMOBJECTINFOPROC)(cl_mem, cl_mem_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLGETIMAGEINFOPROC)(cl_mem, cl_image_info, size_t, void*, size_t*);
-typedef cl_sampler       (CL_API_CALL* PFNCLCREATESAMPLERPROC)(cl_context, cl_bool, cl_addressing_mode, cl_filter_mode, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINSAMPLERPROC)(cl_sampler);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASESAMPLERPROC)(cl_sampler);
-typedef cl_int           (CL_API_CALL* PFNCLGETSAMPLERINFOPROC)(cl_sampler, cl_sampler_info, size_t, void*, size_t*);
-typedef cl_program       (CL_API_CALL* PFNCLCREATEPROGRAMWITHSOURCEPROC)(cl_context, cl_uint, const char**, const size_t*, cl_int*);
-typedef cl_program       (CL_API_CALL* PFNCLCREATEPROGRAMWITHBINARYPROC)(cl_context, cl_uint, const cl_device_id*, const size_t*, const unsigned char**, cl_int*, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINPROGRAMPROC)(cl_program);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASEPROGRAMPROC)(cl_program);
-typedef cl_int           (CL_API_CALL* PFNCLBUILDPROGRAMPROC)(cl_program, cl_uint, const cl_device_id *, const char *, void (CL_CALLBACK*)(cl_program, void*), void*);
-typedef cl_int           (CL_API_CALL* PFNCLGETPROGRAMINFOPROC)(cl_program, cl_program_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLGETPROGRAMBUILDINFOPROC)(cl_program, cl_device_id, cl_program_build_info, size_t, void*, size_t*);
-typedef cl_kernel        (CL_API_CALL* PFNCLCREATEKERNELPROC)(cl_program, const char*, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLCREATEKERNELSINPROGRAMPROC)(cl_program, cl_uint, cl_kernel*, cl_uint*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINKERNELPROC)(cl_kernel);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASEKERNELPROC)(cl_kernel);
-typedef cl_int           (CL_API_CALL* PFNCLSETKERNELARGPROC)(cl_kernel, cl_uint, size_t, const void*);
-typedef cl_int           (CL_API_CALL* PFNCLGETKERNELINFOPROC)(cl_kernel, cl_kernel_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLGETKERNELWORKGROUPINFOPROC)(cl_kernel, cl_device_id, cl_kernel_work_group_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLWAITFOREVENTSPROC)(cl_uint, const cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLGETEVENTINFOPROC)(cl_event, cl_event_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINEVENTPROC)(cl_event);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASEEVENTPROC)(cl_event);
-typedef cl_int           (CL_API_CALL* PFNCLGETEVENTPROFILINGINFOPROC)(cl_event, cl_profiling_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLFLUSHPROC)(cl_command_queue);
-typedef cl_int           (CL_API_CALL* PFNCLFINISHPROC)(cl_command_queue);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEREADBUFFERPROC)(cl_command_queue, cl_mem, cl_bool, size_t, size_t, void*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEWRITEBUFFERPROC)(cl_command_queue, cl_mem, cl_bool, size_t, size_t, const void*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUECOPYBUFFERPROC)(cl_command_queue, cl_mem, cl_mem, size_t, size_t, size_t, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEREADIMAGEPROC)(cl_command_queue, cl_mem, cl_bool, const size_t*, const size_t*, size_t, size_t, void*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEWRITEIMAGEPROC)(cl_command_queue, cl_mem, cl_bool, const size_t*, const size_t*, size_t, size_t, const void*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUECOPYIMAGEPROC)(cl_command_queue, cl_mem, cl_mem, const size_t*, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUECOPYIMAGETOBUFFERPROC)(cl_command_queue, cl_mem, cl_mem, const size_t*, const size_t*, size_t, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUECOPYBUFFERTOIMAGEPROC)(cl_command_queue, cl_mem, cl_mem, size_t, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event*);
-typedef void             (CL_API_CALL* PFNCLENQUEUEMAPBUFFERPROC)(cl_command_queue, cl_mem, cl_bool, cl_map_flags, size_t, size_t, cl_uint, const cl_event*, cl_event*, cl_int*);
-typedef void             (CL_API_CALL* PFNCLENQUEUEMAPIMAGEPROC)(cl_command_queue, cl_mem, cl_bool, cl_map_flags, const size_t *, const size_t *, size_t *, size_t *, cl_uint, const cl_event *, cl_event *, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEUNMAPMEMOBJECTPROC)(cl_command_queue, cl_mem, void*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUENDRANGEKERNELPROC)(cl_command_queue, cl_kernel, cl_uint, const size_t*, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUETASKPROC)(cl_command_queue, cl_kernel, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUENATIVEKERNELPROC)(cl_command_queue, void (CL_CALLBACK*)(void*), void*, size_t, cl_uint, const cl_mem*, const void**, cl_uint, const cl_event*, cl_event*);
+typedef cl_int( CL_API_CALL* PFNCLGETPLATFORMIDSPROC )( cl_uint, cl_platform_id*, cl_uint* );
+typedef cl_int( CL_API_CALL* PFNCLGETPLATFORMINFOPROC )( cl_platform_id, cl_platform_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLGETDEVICEINFOPROC )( cl_device_id, cl_device_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLGETDEVICEIDSPROC )( cl_platform_id, cl_device_type, cl_uint, cl_device_id*, cl_uint* );
+typedef cl_context( CL_API_CALL* PFNCLCREATECONTEXTPROC )( const cl_context_properties*, cl_uint, const cl_device_id*, void ( CL_CALLBACK* )( const char*, const void*, size_t, void* ), void*, cl_int* );
+typedef cl_context( CL_API_CALL* PFNCLCREATECONTEXTFROMTYPEPROC )( const cl_context_properties*, cl_device_type, void ( CL_CALLBACK* )( const char*, const void*, size_t, void* ), void*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINCONTEXTPROC )( cl_context );
+typedef cl_int( CL_API_CALL* PFNCLRELEASECONTEXTPROC )( cl_context );
+typedef cl_int( CL_API_CALL* PFNCLGETCONTEXTINFOPROC )( cl_context, cl_context_info, size_t, void*, size_t* );
+typedef cl_command_queue( CL_API_CALL* PFNCLCREATECOMMANDQUEUEPROC )( cl_context, cl_device_id, cl_command_queue_properties, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINCOMMANDQUEUEPROC )( cl_command_queue );
+typedef cl_int( CL_API_CALL* PFNCLRELEASECOMMANDQUEUEPROC )( cl_command_queue );
+typedef cl_int( CL_API_CALL* PFNCLGETCOMMANDQUEUEINFOPROC )( cl_command_queue, cl_command_queue_info, size_t, void*, size_t* );
+typedef cl_mem( CL_API_CALL* PFNCLCREATEBUFFERPROC )( cl_context, cl_mem_flags, size_t, void*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINMEMOBJECTPROC )( cl_mem );
+typedef cl_int( CL_API_CALL* PFNCLRELEASEMEMOBJECTPROC )( cl_mem );
+typedef cl_int( CL_API_CALL* PFNCLGETSUPPORTEDIMAGEFORMATSPROC )( cl_context, cl_mem_flags, cl_mem_object_type, cl_uint, cl_image_format*, cl_uint* );
+typedef cl_int( CL_API_CALL* PFNCLGETMEMOBJECTINFOPROC )( cl_mem, cl_mem_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLGETIMAGEINFOPROC )( cl_mem, cl_image_info, size_t, void*, size_t* );
+typedef cl_sampler( CL_API_CALL* PFNCLCREATESAMPLERPROC )( cl_context, cl_bool, cl_addressing_mode, cl_filter_mode, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINSAMPLERPROC )( cl_sampler );
+typedef cl_int( CL_API_CALL* PFNCLRELEASESAMPLERPROC )( cl_sampler );
+typedef cl_int( CL_API_CALL* PFNCLGETSAMPLERINFOPROC )( cl_sampler, cl_sampler_info, size_t, void*, size_t* );
+typedef cl_program( CL_API_CALL* PFNCLCREATEPROGRAMWITHSOURCEPROC )( cl_context, cl_uint, const char**, const size_t*, cl_int* );
+typedef cl_program( CL_API_CALL* PFNCLCREATEPROGRAMWITHBINARYPROC )( cl_context, cl_uint, const cl_device_id*, const size_t*, const unsigned char**, cl_int*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINPROGRAMPROC )( cl_program );
+typedef cl_int( CL_API_CALL* PFNCLRELEASEPROGRAMPROC )( cl_program );
+typedef cl_int( CL_API_CALL* PFNCLBUILDPROGRAMPROC )( cl_program, cl_uint, const cl_device_id*, const char*, void ( CL_CALLBACK* )( cl_program, void* ), void* );
+typedef cl_int( CL_API_CALL* PFNCLGETPROGRAMINFOPROC )( cl_program, cl_program_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLGETPROGRAMBUILDINFOPROC )( cl_program, cl_device_id, cl_program_build_info, size_t, void*, size_t* );
+typedef cl_kernel( CL_API_CALL* PFNCLCREATEKERNELPROC )( cl_program, const char*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLCREATEKERNELSINPROGRAMPROC )( cl_program, cl_uint, cl_kernel*, cl_uint* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINKERNELPROC )( cl_kernel );
+typedef cl_int( CL_API_CALL* PFNCLRELEASEKERNELPROC )( cl_kernel );
+typedef cl_int( CL_API_CALL* PFNCLSETKERNELARGPROC )( cl_kernel, cl_uint, size_t, const void* );
+typedef cl_int( CL_API_CALL* PFNCLGETKERNELINFOPROC )( cl_kernel, cl_kernel_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLGETKERNELWORKGROUPINFOPROC )( cl_kernel, cl_device_id, cl_kernel_work_group_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLWAITFOREVENTSPROC )( cl_uint, const cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLGETEVENTINFOPROC )( cl_event, cl_event_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINEVENTPROC )( cl_event );
+typedef cl_int( CL_API_CALL* PFNCLRELEASEEVENTPROC )( cl_event );
+typedef cl_int( CL_API_CALL* PFNCLGETEVENTPROFILINGINFOPROC )( cl_event, cl_profiling_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLFLUSHPROC )( cl_command_queue );
+typedef cl_int( CL_API_CALL* PFNCLFINISHPROC )( cl_command_queue );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEREADBUFFERPROC )( cl_command_queue, cl_mem, cl_bool, size_t, size_t, void*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEWRITEBUFFERPROC )( cl_command_queue, cl_mem, cl_bool, size_t, size_t, const void*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUECOPYBUFFERPROC )( cl_command_queue, cl_mem, cl_mem, size_t, size_t, size_t, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEREADIMAGEPROC )( cl_command_queue, cl_mem, cl_bool, const size_t*, const size_t*, size_t, size_t, void*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEWRITEIMAGEPROC )( cl_command_queue, cl_mem, cl_bool, const size_t*, const size_t*, size_t, size_t, const void*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUECOPYIMAGEPROC )( cl_command_queue, cl_mem, cl_mem, const size_t*, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUECOPYIMAGETOBUFFERPROC )( cl_command_queue, cl_mem, cl_mem, const size_t*, const size_t*, size_t, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUECOPYBUFFERTOIMAGEPROC )( cl_command_queue, cl_mem, cl_mem, size_t, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event* );
+typedef void ( CL_API_CALL* PFNCLENQUEUEMAPBUFFERPROC )( cl_command_queue, cl_mem, cl_bool, cl_map_flags, size_t, size_t, cl_uint, const cl_event*, cl_event*, cl_int* );
+typedef void ( CL_API_CALL* PFNCLENQUEUEMAPIMAGEPROC )( cl_command_queue, cl_mem, cl_bool, cl_map_flags, const size_t*, const size_t*, size_t*, size_t*, cl_uint, const cl_event*, cl_event*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEUNMAPMEMOBJECTPROC )( cl_command_queue, cl_mem, void*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUENDRANGEKERNELPROC )( cl_command_queue, cl_kernel, cl_uint, const size_t*, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUETASKPROC )( cl_command_queue, cl_kernel, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUENATIVEKERNELPROC )( cl_command_queue, void ( CL_CALLBACK* )( void* ), void*, size_t, cl_uint, const cl_mem*, const void**, cl_uint, const cl_event*, cl_event* );
 
 // 1.1
-typedef cl_mem           (CL_API_CALL* PFNCLCREATEIMAGE2DPROC)(cl_context, cl_mem_flags, const cl_image_format*, size_t, size_t, size_t, void*, cl_int*);
-typedef cl_mem           (CL_API_CALL* PFNCLCREATEIMAGE3DPROC)(cl_context, cl_mem_flags, const cl_image_format*, size_t, size_t, size_t, size_t, size_t, void*, cl_int*);
-typedef cl_mem           (CL_API_CALL* PFNCLCREATESUBBUFFERPROC)(cl_mem, cl_mem_flags, cl_buffer_create_type, const void*, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLSETMEMOBJECTDESTRUCTORCALLBACKPROC)(cl_mem, void (CL_CALLBACK*)(cl_mem, void*), void*);
-typedef cl_event         (CL_API_CALL* PFNCLCREATEUSEREVENTPROC)(cl_context, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLSETUSEREVENTSTATUSPROC)(cl_event, cl_int);
-typedef cl_int           (CL_API_CALL* PFNCLSETEVENTCALLBACKPROC)(cl_event, cl_int, void (CL_CALLBACK*)(cl_event, cl_int, void*), void*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEREADBUFFERRECTPROC)(cl_command_queue, cl_mem, cl_bool, const size_t *, const size_t *, const size_t *, size_t, size_t, size_t, size_t, void*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEWRITEBUFFERRECTPROC)(cl_command_queue, cl_mem, cl_bool, const size_t *, const size_t *, const size_t *, size_t, size_t, size_t, size_t, const void*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUECOPYBUFFERRECTPROC)(cl_command_queue, cl_mem, cl_mem, const size_t*, const size_t*, const size_t*, size_t, size_t, size_t, size_t, cl_uint, const cl_event*, cl_event*);
+typedef cl_mem( CL_API_CALL* PFNCLCREATEIMAGE2DPROC )( cl_context, cl_mem_flags, const cl_image_format*, size_t, size_t, size_t, void*, cl_int* );
+typedef cl_mem( CL_API_CALL* PFNCLCREATEIMAGE3DPROC )( cl_context, cl_mem_flags, const cl_image_format*, size_t, size_t, size_t, size_t, size_t, void*, cl_int* );
+typedef cl_mem( CL_API_CALL* PFNCLCREATESUBBUFFERPROC )( cl_mem, cl_mem_flags, cl_buffer_create_type, const void*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLSETMEMOBJECTDESTRUCTORCALLBACKPROC )( cl_mem, void ( CL_CALLBACK* )( cl_mem, void* ), void* );
+typedef cl_event( CL_API_CALL* PFNCLCREATEUSEREVENTPROC )( cl_context, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLSETUSEREVENTSTATUSPROC )( cl_event, cl_int );
+typedef cl_int( CL_API_CALL* PFNCLSETEVENTCALLBACKPROC )( cl_event, cl_int, void ( CL_CALLBACK* )( cl_event, cl_int, void* ), void* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEREADBUFFERRECTPROC )( cl_command_queue, cl_mem, cl_bool, const size_t*, const size_t*, const size_t*, size_t, size_t, size_t, size_t, void*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEWRITEBUFFERRECTPROC )( cl_command_queue, cl_mem, cl_bool, const size_t*, const size_t*, const size_t*, size_t, size_t, size_t, size_t, const void*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUECOPYBUFFERRECTPROC )( cl_command_queue, cl_mem, cl_mem, const size_t*, const size_t*, const size_t*, size_t, size_t, size_t, size_t, cl_uint, const cl_event*, cl_event* );
 
 // 1.2
-typedef cl_int           (CL_API_CALL* PFNCLCREATESUBDEVICESPROC)(cl_device_id, const cl_device_partition_property*, cl_uint, cl_device_id*, cl_uint*);
-typedef cl_int           (CL_API_CALL* PFNCLRETAINDEVICEPROC)(cl_device_id);
-typedef cl_int           (CL_API_CALL* PFNCLRELEASEDEVICEPROC)(cl_device_id);
-typedef cl_mem           (CL_API_CALL* PFNCLCREATEIMAGEPROC)(cl_context, cl_mem_flags, const cl_image_format*, const cl_image_desc*, void*, cl_int*);
-typedef cl_program       (CL_API_CALL* PFNCLCREATEPROGRAMWITHBUILTINKERNELSPROC)(cl_context, cl_uint, const cl_device_id*, const char*, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLCOMPILEPROGRAMPROC)(cl_program, cl_uint, const cl_device_id*, const char*, cl_uint, const cl_program*, const char**, void (CL_CALLBACK*)(cl_program, void*), void*);
-typedef cl_program       (CL_API_CALL* PFNCLLINKPROGRAMPROC)(cl_context, cl_uint, const cl_device_id*, const char*, cl_uint, const cl_program*, void (CL_CALLBACK*)(cl_program, void*), void*, cl_int*);
-typedef cl_int           (CL_API_CALL* PFNCLUNLOADPLATFORMCOMPILERPROC)(cl_platform_id);
-typedef cl_int           (CL_API_CALL* PFNCLGETKERNELARGINFOPROC)(cl_kernel, cl_uint, cl_kernel_arg_info, size_t, void*, size_t*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEFILLBUFFERPROC)(cl_command_queue, cl_mem, const void*, size_t, size_t, size_t, cl_uint, const cl_event*, cl_event *);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEFILLIMAGEPROC)(cl_command_queue, cl_mem, const void*, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEMIGRATEMEMOBJECTSPROC)(cl_command_queue, cl_uint, const cl_mem*, cl_mem_migration_flags, cl_uint, const cl_event *, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEMARKERWITHWAITLISTPROC)(cl_command_queue, cl_uint, const cl_event*, cl_event*);
-typedef cl_int           (CL_API_CALL* PFNCLENQUEUEBARRIERWITHWAITLISTPROC)(cl_command_queue, cl_uint, const cl_event *, cl_event*);
+typedef cl_int( CL_API_CALL* PFNCLCREATESUBDEVICESPROC )( cl_device_id, const cl_device_partition_property*, cl_uint, cl_device_id*, cl_uint* );
+typedef cl_int( CL_API_CALL* PFNCLRETAINDEVICEPROC )( cl_device_id );
+typedef cl_int( CL_API_CALL* PFNCLRELEASEDEVICEPROC )( cl_device_id );
+typedef cl_mem( CL_API_CALL* PFNCLCREATEIMAGEPROC )( cl_context, cl_mem_flags, const cl_image_format*, const cl_image_desc*, void*, cl_int* );
+typedef cl_program( CL_API_CALL* PFNCLCREATEPROGRAMWITHBUILTINKERNELSPROC )( cl_context, cl_uint, const cl_device_id*, const char*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLCOMPILEPROGRAMPROC )( cl_program, cl_uint, const cl_device_id*, const char*, cl_uint, const cl_program*, const char**, void ( CL_CALLBACK* )( cl_program, void* ), void* );
+typedef cl_program( CL_API_CALL* PFNCLLINKPROGRAMPROC )( cl_context, cl_uint, const cl_device_id*, const char*, cl_uint, const cl_program*, void ( CL_CALLBACK* )( cl_program, void* ), void*, cl_int* );
+typedef cl_int( CL_API_CALL* PFNCLUNLOADPLATFORMCOMPILERPROC )( cl_platform_id );
+typedef cl_int( CL_API_CALL* PFNCLGETKERNELARGINFOPROC )( cl_kernel, cl_uint, cl_kernel_arg_info, size_t, void*, size_t* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEFILLBUFFERPROC )( cl_command_queue, cl_mem, const void*, size_t, size_t, size_t, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEFILLIMAGEPROC )( cl_command_queue, cl_mem, const void*, const size_t*, const size_t*, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEMIGRATEMEMOBJECTSPROC )( cl_command_queue, cl_uint, const cl_mem*, cl_mem_migration_flags, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEMARKERWITHWAITLISTPROC )( cl_command_queue, cl_uint, const cl_event*, cl_event* );
+typedef cl_int( CL_API_CALL* PFNCLENQUEUEBARRIERWITHWAITLISTPROC )( cl_command_queue, cl_uint, const cl_event*, cl_event* );
 
 #define CMFT_CL_IMPORT_ALL_10 \
 			/* Platform API */ \
@@ -836,7 +839,7 @@ CMFT_CL_IMPORT_ALL
 extern "C"
 {
 #define CMFT_CL_IMPORT(_version, _optional, _proto, _func) _proto _func
-CMFT_CL_IMPORT_ALL
+	CMFT_CL_IMPORT_ALL
 #undef CMFT_CL_IMPORT
 };
 
@@ -844,83 +847,83 @@ CMFT_CL_IMPORT_ALL
 
 namespace cmft
 {
-	struct OpenCLContext
+struct OpenCLContext
+{
+	OpenCLContext()
+		: m_handle( NULL )
+		, m_refCount( 0 )
 	{
-		OpenCLContext()
-			: m_handle(NULL)
-			, m_refCount(0)
+	}
+	
+	int32_t load()
+	{
+		if( NULL != m_handle )
 		{
-		}
-
-		int32_t load()
-		{
-			if (NULL != m_handle)
-			{
-				int32_t ref = ++m_refCount;
-				return ref;
-			}
-
-			const char* filePath =
-#if CMFT_PLATFORM_LINUX
-				"libOpenCL.so"
-#elif CMFT_PLATFORM_APPLE
-				"/Library/Frameworks/OpenCL.framework/OpenCL"
-#elif CMFT_PLATFORM_WINDOWS
-				"opencl.dll"
-#else
-				"??? unknown OpenCL platform ???"
-#endif // CMFT_PLATFORM_
-				;
-
-			m_handle = cmft::dlopen(filePath);
-			if (NULL == m_handle)
-			{
-				fprintf(stderr, "Unable to find OpenCL '%s' dynamic library.\n", filePath);
-				return 0;
-			}
-
-			m_refCount = 1;
-
-#define CMFT_CL_IMPORT(_version, _optional, _proto, _func) _func = (_proto)cmft::dlsym(m_handle, #_func)
-			CMFT_CL_IMPORT_ALL
-#undef CMFT_CL_IMPORT
-
-			return 1;
-		}
-
-		int32_t unload()
-		{
-			const bool check = m_refCount > 0 && NULL != m_handle;
-			if (!check)
-			{
-				fprintf(stderr, "OpenCL is not loaded.\n");
-			}
-
-			int32_t ref = --m_refCount;
-			if (0 == ref)
-			{
-				dlclose(m_handle);
-				m_handle = NULL;
-			}
-
+			int32_t ref = ++m_refCount;
 			return ref;
 		}
-
-		void* m_handle;
-		int32_t m_refCount;
-	};
-
-	static OpenCLContext s_ctx;
-
-	int32_t clLoad()
-	{
-		return s_ctx.load();
+		
+		const char* filePath =
+#if CMFT_PLATFORM_LINUX
+			"libOpenCL.so"
+#elif CMFT_PLATFORM_APPLE
+			"/Library/Frameworks/OpenCL.framework/OpenCL"
+#elif CMFT_PLATFORM_WINDOWS
+			"opencl.dll"
+#else
+			"??? unknown OpenCL platform ???"
+#endif // CMFT_PLATFORM_
+			;
+			
+		m_handle = cmft::dlopen( filePath );
+		if( NULL == m_handle )
+		{
+			fprintf( stderr, "Unable to find OpenCL '%s' dynamic library.\n", filePath );
+			return 0;
+		}
+		
+		m_refCount = 1;
+		
+#define CMFT_CL_IMPORT(_version, _optional, _proto, _func) _func = (_proto)cmft::dlsym(m_handle, #_func)
+		CMFT_CL_IMPORT_ALL
+#undef CMFT_CL_IMPORT
+		
+		return 1;
 	}
-
-	int32_t clUnload()
+	
+	int32_t unload()
 	{
-		return s_ctx.unload();
+		const bool check = m_refCount > 0 && NULL != m_handle;
+		if( !check )
+		{
+			fprintf( stderr, "OpenCL is not loaded.\n" );
+		}
+		
+		int32_t ref = --m_refCount;
+		if( 0 == ref )
+		{
+			dlclose( m_handle );
+			m_handle = NULL;
+		}
+		
+		return ref;
 	}
+	
+	void* m_handle;
+	int32_t m_refCount;
+};
+
+static OpenCLContext s_ctx;
+
+int32_t clLoad()
+{
+	return s_ctx.load();
+}
+
+int32_t clUnload()
+{
+	return s_ctx.unload();
+}
 
 } // namespace cmft
 

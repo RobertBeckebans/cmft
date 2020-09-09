@@ -36,14 +36,14 @@
 //------------------------------------------------------------
 
 #if defined(_WIN32) || defined(_WIN64)
-#   undef CMFT_COMPILER_MSVC
-#   define CMFT_COMPILER_MSVC 1
+	#undef CMFT_COMPILER_MSVC
+	#define CMFT_COMPILER_MSVC 1
 #elif defined(__GNUC__)
-#   undef CMFT_COMPILER_GCC
-#   define CMFT_COMPILER_GCC 1
+	#undef CMFT_COMPILER_GCC
+	#define CMFT_COMPILER_GCC 1
 #elif defined(__clang__)
-#   undef CMFT_COMPILER_CLANG
-#   define CMFT_COMPILER_CLANG 1
+	#undef CMFT_COMPILER_CLANG
+	#define CMFT_COMPILER_CLANG 1
 #endif
 
 #if (0                      \
@@ -100,8 +100,8 @@
 #endif
 
 #if defined(__unix__) || defined(__unix)
-#   undef CMFT_PLATFORM_UNIX
-#   define CMFT_PLATFORM_UNIX 1
+	#undef CMFT_PLATFORM_UNIX
+	#define CMFT_PLATFORM_UNIX 1
 #endif
 
 #undef CMFT_PLATFORM_POSIX

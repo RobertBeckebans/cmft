@@ -11,24 +11,24 @@
 
 namespace cmft
 {
-    struct ClContext
-    {
-        ClContext()
-        {
-            m_device = NULL;
-            m_context = NULL;
-            m_commandQueue = NULL;
-            m_deviceVendor[0] = '\0';
-            m_deviceName[0] = '\0';
-        }
-
-        cl_device_id m_device;
-        cl_context m_context;
-        cl_command_queue m_commandQueue;
-        cl_device_type m_deviceType;
-        char m_deviceVendor[128];
-        char m_deviceName[128];
-    };
+struct ClContext
+{
+	ClContext()
+	{
+		m_device = NULL;
+		m_context = NULL;
+		m_commandQueue = NULL;
+		m_deviceVendor[0] = '\0';
+		m_deviceName[0] = '\0';
+	}
+	
+	cl_device_id m_device;
+	cl_context m_context;
+	cl_command_queue m_commandQueue;
+	cl_device_type m_deviceType;
+	char m_deviceVendor[128];
+	char m_deviceName[128];
+};
 
 } // namespace cmft
 #endif

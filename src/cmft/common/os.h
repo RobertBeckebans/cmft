@@ -35,49 +35,49 @@
 #include <stdint.h>
 
 #if CMFT_PLATFORM_WINDOWS
-#   include <windows.h>
+	#include <windows.h>
 #elif CMFT_PLATFORM_LINUX || CMFT_PLATFORM_APPLE
-#   include <sched.h> // sched_yield
-#   if CMFT_PLATFORM_APPLE
-#       include <pthread.h> // mach_port_t
-#   endif // CMFT_PLATFORM_*
-#
-#   include <dlfcn.h> // dlopen, dlclose, dlsym
-#
-#   if CMFT_PLATFORM_LINUX
-#       include <unistd.h> // syscall
-#       include <sys/syscall.h>
-#   endif // CMFT_PLATFORM_LINUX
+	#include <sched.h> // sched_yield
+	#if CMFT_PLATFORM_APPLE
+		#include <pthread.h> // mach_port_t
+	#endif // CMFT_PLATFORM_*
+	#
+	#include <dlfcn.h> // dlopen, dlclose, dlsym
+	#
+	#if CMFT_PLATFORM_LINUX
+		#include <unistd.h> // syscall
+		#include <sys/syscall.h>
+	#endif // CMFT_PLATFORM_LINUX
 #endif // CMFT_PLATFORM_
 
 namespace cmft
 {
-    inline void* dlopen(const char* _filePath)
-    {
-    #if CMFT_PLATFORM_WINDOWS
-        return (void*)::LoadLibraryA(_filePath);
-    #else
-        return ::dlopen(_filePath, RTLD_LOCAL|RTLD_LAZY);
-    #endif // CMFT_PLATFORM_
-    }
+inline void* dlopen( const char* _filePath )
+{
+#if CMFT_PLATFORM_WINDOWS
+	return ( void* )::LoadLibraryA( _filePath );
+#else
+	return ::dlopen( _filePath, RTLD_LOCAL | RTLD_LAZY );
+#endif // CMFT_PLATFORM_
+}
 
-    inline void dlclose(void* _handle)
-    {
-    #if CMFT_PLATFORM_WINDOWS
-        ::FreeLibrary( (HMODULE)_handle);
-    #else
-        ::dlclose(_handle);
-    #endif // CMFT_PLATFORM_
-    }
+inline void dlclose( void* _handle )
+{
+#if CMFT_PLATFORM_WINDOWS
+	::FreeLibrary( ( HMODULE )_handle );
+#else
+	::dlclose( _handle );
+#endif // CMFT_PLATFORM_
+}
 
-    inline void* dlsym(void* _handle, const char* _symbol)
-    {
-    #if CMFT_PLATFORM_WINDOWS
-        return (void*)::GetProcAddress( (HMODULE)_handle, _symbol);
-    #else
-        return ::dlsym(_handle, _symbol);
-    #endif // CMFT_PLATFORM_
-    }
+inline void* dlsym( void* _handle, const char* _symbol )
+{
+#if CMFT_PLATFORM_WINDOWS
+	return ( void* )::GetProcAddress( ( HMODULE )_handle, _symbol );
+#else
+	return ::dlsym( _handle, _symbol );
+#endif // CMFT_PLATFORM_
+}
 }
 
 #endif // CMFT_OS_H_HEADER_GUARD
