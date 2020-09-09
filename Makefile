@@ -7,15 +7,16 @@ VS2008_DEVENV_DIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE
 VS2010_DEVENV_DIR=C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE
 VS2012_DEVENV_DIR=C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE
 
-UNAME := $(shell uname -s)
-ifeq ($(UNAME),$(filter $(UNAME),Linux Darwin))
-	ifeq ($(UNAME),$(filter $(UNAME),Darwin))
+ifeq ($(OS),Windows_NT)
+	OS=windows
+else
+	UNAME := $(shell uname -s)
+	ifeq ($(UNAME),Darwin)
 		OS=darwin
-	else
+	endif
+	ifeq ($(UNAME),Linux)
 		OS=linux
 	endif
-else
-	OS=windows
 endif
 
 GENIE=./dependency/bx/tools/bin/$(OS)/genie
@@ -30,6 +31,7 @@ all:
 	$(GENIE) --file=scripts/main.lua vs2010
 	$(GENIE) --file=scripts/main.lua vs2012
 	$(GENIE) --file=scripts/main.lua vs2013
+	$(GENIE) --file=scripts/main.lua vs2015
 	$(GENIE) --file=scripts/main.lua --gcc=mingw-gcc gmake
 	$(GENIE) --file=scripts/main.lua --gcc=linux-gcc gmake
 	$(GENIE) --file=scripts/main.lua --gcc=osx       gmake
@@ -94,6 +96,17 @@ vs2013-debug64:
 	"$(subst /,\\,$(VS2013_DEVENV_DIR))\devenv" _projects/vs2013/cmft.sln /Build "Debug|x64"
 vs2013-release64:
 	"$(subst /,\\,$(VS2013_DEVENV_DIR))\devenv" _projects/vs2013/cmft.sln /Build "Release|x64"
+
+_projects/vs2015:
+	$(GENIE) --file=scripts/main.lua vs2015
+vs2015-debug32:
+	"$(subst /,\\,$(VS2015_DEVENV_DIR))\devenv" _projects/vs2015/cmft.sln /Build "Debug|Win32"
+vs2015-release32:
+	"$(subst /,\\,$(VS2015_DEVENV_DIR))\devenv" _projects/vs2015/cmft.sln /Build "Release|Win32"
+vs2015-debug64:
+	"$(subst /,\\,$(VS2015_DEVENV_DIR))\devenv" _projects/vs2015/cmft.sln /Build "Debug|x64"
+vs2015-release64:
+	"$(subst /,\\,$(VS2015_DEVENV_DIR))\devenv" _projects/vs2015/cmft.sln /Build "Release|x64"
 
 _projects/gmake-linux:
 	$(GENIE) --file=scripts/main.lua --gcc=linux-gcc gmake
