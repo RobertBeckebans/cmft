@@ -6,6 +6,7 @@
 #ifndef CMFT_CLCONTEXT_INTERNAL_H_HEADER_GUARD
 #define CMFT_CLCONTEXT_INTERNAL_H_HEADER_GUARD
 
+#if defined(CMFT_CL_IMPLEMENTATION)
 #include "common/cl.h"
 
 namespace cmft
@@ -30,6 +31,7 @@ namespace cmft
     };
 
 } // namespace cmft
+#endif
 
 #endif //CMFT_CLCONTEXT_INTERNAL_H_HEADER_GUARD
 

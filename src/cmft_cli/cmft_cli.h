@@ -12,7 +12,11 @@
 #include <common/config.h>      // INFO, WARN
 #include <common/utils.h>
 #include <common/commandline.h>
+
+
+#if defined(CMFT_CL_IMPLEMENTATION) && defined(__OPENCL_CL_H)
 #include <common/cl.h>
+#endif
 
 #include <cmft/image.h>
 #include <cmft/cubemapfilter.h>
@@ -852,6 +856,7 @@ int cmftMain(int _argc, char const* const* _argv)
     // Action for --printCLDevices.
     if (cmdLine.hasArg("printCLDevices"))
     {
+#if defined(CMFT_CL_IMPLEMENTATION)
         if (cmft::clLoad())
         {
             clPrintDevices();
@@ -861,6 +866,10 @@ int cmftMain(int _argc, char const* const* _argv)
 
         WARN("ERROR! OpenCL is not set up properly on the machine.");
         return EXIT_FAILURE;
+#else
+		WARN("ERROR! Tool was build without OpenCL support.");
+        return EXIT_FAILURE;
+#endif
     }
 
     #if CMFT_ALWAYS_FLUSH_OUTPUT
@@ -1002,6 +1011,7 @@ int cmftMain(int _argc, char const* const* _argv)
     {
         ClContext* clContext = NULL;
 
+#if defined(CMFT_CL_IMPLEMENTATION)
         int32_t clLoaded = 0;
         if (inputParameters.m_useOpenCL)
         {
@@ -1015,6 +1025,7 @@ int cmftMain(int _argc, char const* const* _argv)
                                  );
             }
         }
+#endif
 
         // Start filter.
         imageRadianceFilter(image
@@ -1029,6 +1040,7 @@ int cmftMain(int _argc, char const* const* _argv)
                           , clContext
                           );
 
+#if defined(CMFT_CL_IMPLEMENTATION)
         clDestroy(clContext);
 
         // Unload opencl lib.
@@ -1036,6 +1048,7 @@ int cmftMain(int _argc, char const* const* _argv)
         {
             cmft::clUnload();
         }
+#endif
     }
     else if (FilterType::Irradiance == inputParameters.m_filterType)
     {

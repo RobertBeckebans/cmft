@@ -3,7 +3,7 @@
  * License: http://www.opensource.org/licenses/BSD-2-Clause
  */
 
-#define CMFT_CL_IMPLEMENTATION
+//#define CMFT_CL_IMPLEMENTATION
 #include "common/cl.h"
 
 #include <cmft/clcontext.h>

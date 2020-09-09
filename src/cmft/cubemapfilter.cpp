@@ -11,7 +11,9 @@
 #include <cmft/clcontext.h>
 #include <cmft/allocator.h>
 
+#if defined(CMFT_CL_IMPLEMENTATION)
 #include "clcontext_internal.h"
+#endif
 
 #include "cubemaputils.h"
 #include "radiance.h"
@@ -1161,6 +1163,7 @@ namespace cmft
         return EXIT_SUCCESS;
     }
 
+#if defined(CMFT_CL_IMPLEMENTATION)
     struct RadianceProgram
     {
         RadianceProgram()
@@ -1719,10 +1722,11 @@ namespace cmft
         cl_kernel m_sum;
         cl_event m_event;
         cl_mem m_memOut;
-        uint32_t m_prevDstFaceSize;
-        float m_srcFaceSize;
         cl_mem m_memFaceData[6];
         cl_mem m_memNormalSolidAngle[6];
+
+		uint32_t m_prevDstFaceSize;
+        float m_srcFaceSize;
     };
     RadianceProgram s_radianceProgram;
 
@@ -1780,6 +1784,7 @@ namespace cmft
 
         return EXIT_SUCCESS;
     }
+#endif
 
     static const char* s_lightingModelStr[LightingModel::Count] =
     {
@@ -1881,6 +1886,7 @@ namespace cmft
         uint32_t activeCpuThreads = 0;
         const uint32_t maxActiveCpuThreads = (uint32_t)CMFT_CLAMP(_numCpuProcessingThreads, 0, 64);
 
+#if defined(CMFT_CL_IMPLEMENTATION)
         // Prepare OpenCL kernel and device memory.
 
         s_radianceProgram.setDeviceContext(_clContext);
@@ -1934,6 +1940,7 @@ namespace cmft
                  " device other than the host device, simply ignore this warning. !!"
                  );
         }
+#endif
 
         // Processing is done in Rgba32f format.
         ImageSoftRef imageRgba32f;
@@ -2060,6 +2067,7 @@ namespace cmft
             // Build cubemap vectors.
             float* cubemapVectors = buildCubemapNormalSolidAngle(imageRgba32f.m_width, _edgeFixup, &g_crtAllocator);
 
+#if defined(CMFT_CL_IMPLEMENTATION)
             // Enqueue memory transfer for cl device.
             if (s_radianceProgram.isValid())
             {
@@ -2069,6 +2077,7 @@ namespace cmft
                     s_radianceProgram.invalidate();
                 }
             }
+#endif
 
             // Start global timer.
             s_globalState.reset();
@@ -2076,12 +2085,14 @@ namespace cmft
             s_globalState.m_totalTasks = mipCount*6;
             INFO("Radiance -> Starting filter...");
 
+#if defined(CMFT_CL_IMPLEMENTATION)
             INFO("Radiance -> Utilizing %u CPU processing thread%s%s%s."
                 , maxActiveCpuThreads
                 , maxActiveCpuThreads==1?"":"s"
                 , !s_radianceProgram.isValid()?"":" and "
                 , !s_radianceProgram.isValid()?"":s_radianceProgram.m_clContext->m_deviceName
                 );
+#endif
 
             // Alloc data for tasks parameters.
             const uint8_t mipStart = uint8_t(_excludeBase);
@@ -2137,7 +2148,11 @@ namespace cmft
             INFO("Radiance -> ------------------------------------");
 
             // Single thread, no OpenCL.
-            if (maxActiveCpuThreads == 1 && !s_radianceProgram.isValid())
+            if (maxActiveCpuThreads == 1
+#if defined(CMFT_CL_IMPLEMENTATION)
+				&& !s_radianceProgram.isValid()
+#endif
+				)
             {
                 radianceFilterCpu((void*)&taskList);
             }
@@ -2150,11 +2165,13 @@ namespace cmft
                     cpuThreads[activeCpuThreads++] = std::thread(radianceFilterCpu, (void*)&taskList);
                 }
 
+#if defined(CMFT_CL_IMPLEMENTATION)
                 // Start one GPU host thread.
                 if (s_radianceProgram.isValid() && s_radianceProgram.isIdle())
                 {
                     cpuThreads[activeCpuThreads++] = std::thread(radianceFilterGpu, (void*)&taskList);
                 }
+#endif
 
                 // Wait for everything to finish.
                 for (uint32_t ii = 0; ii < activeCpuThreads; ++ii)
@@ -2210,12 +2227,14 @@ namespace cmft
             INFO("Radiance -> Total faces processed on <GPU>: %u", s_globalState.m_completedTasksGpu);
             INFO("Radiance -> Total time: %.3f seconds.", double(totalTime)*toSec);
 
+#if defined(CMFT_CL_IMPLEMENTATION)
             // Cleanup.
             if (s_radianceProgram.isValid())
             {
                 s_radianceProgram.releaseDeviceMemory();
                 s_radianceProgram.destroy();
             }
+#endif
             s_globalState.reset();
 
             CMFT_FREE(&g_crtAllocator, cubemapVectors);
